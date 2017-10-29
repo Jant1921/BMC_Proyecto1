@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>JDM Alignments</title>    
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" crossorigin="anonymous">
+        <style type="text/css">
+            .path-cell {
+                background-color: #ACD;
+            }
+        </style>
+    </head>
+    
+    <body style="margin: 2em;">
+        <form action="/" method="post">
+            <h3>Hileras a comprar</h3>
+            <label for="first_word">Hilera 1</label>
+            {% if results is not None %}
+            <textarea id="first_word" name="first_word" class="form-control" rows="2" required>
+                {{results["first_word"]}}
+            </textarea>
+            <br>
+            <label for="second_word">Hilera 2</label>
+            <textarea id="second_word" name="second_word" class="form-control" rows="2" required>
+                {{results["second_word"]}}
+            </textarea>
+            {% else %}
+            <textarea id="first_word" name="first_word" class="form-control" rows="2" required></textarea>
+            <br>
+            <label for="second_word">Hilera 2</label>
+            <textarea id="second_word" name="second_word" class="form-control" rows="2" required></textarea>
+            {% end %}
+            <br>
+
+            <h3>Lista de Alineamientos</h3>
+            
+            {% for type in algorithmsList %}
+            <input
+                type="radio"
+                name="type"
+                value={{type[1]}} required/>
+            <label for={{type[1]}}>
+                {{type[0]}}
+            </label>
+            <br>
+            {% end %}
+            
+            <input class="btn btn-primary" type="submit" value="Submit"/>
+        </form>
+        
+        <br>
+        
+        {% if results is not None %}
+        <h3>Resultados: {{results["algorithm"]}}</h3>
+        <br>
+        
+        <p>Optimal value: {{ results["optimal_value"] }}</p>
+        <p>Optimal path: {{ results["optimal_path"] }}</p>
+
+        <table class="table table-bordered">
+            <tr>
+                <td></td>
+                {% for letter in results["first_word"] %}
+                <td>{{ letter }}</td>
+                {% end %}
+            </tr>
+            
+            {% for y, row in enumerate(results["matrix"]) %}
+            <tr>
+                <td>{{ results["second_word"][0] }}</td>
+                {% set results["second_word"] = results["second_word"][1:] %}
+                {% for x, element in enumerate(row) %}
+                
+                    {% if (x, y) in results["optimal_path"] %}
+                    <td class="path-cell">{{ element }}</td>
+                    {% else %}
+                    <td>{{ element }}</td>
+                    {% end %}
+                {% end %}
+            </tr>
+            {% end %}
+        </table>
+        
+        {% end %}
+    </body>
+</html>
