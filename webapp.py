@@ -13,17 +13,17 @@ if tornado.version_info[0] < 4 and tornado.version_info[1] < 3:
     sys.exit(1)
 
 algorithmsList = [
-            ["Global Estándar","global_estandar"],
-            ["Global Lineal","global_lineal"],
-            ["Global con K-Band","global_kband"],
-            ["*Global K-Band Lineal","kband_lineal"],
-            ["*Global costo por gap","global_costogap"],
-            ["Semiglobal Estándar","semi_estandar"],
-            ["Semiglobal Lineal","semi_lineal"],
-            ["*Semiglobal costo por gap","semi_costogap"],
-            ["Local Estándar","local_estandar"],
-            ["Local Lineal","local_lineal"],
-            ["*Local costo por gap","local_costogap"],
+            [">Global Estándar","global_estandar"],
+            ["--Global Lineal","global_lineal"],
+            [">Global con K-Band (no funciona/se pega)","global_kband"],
+            ["--Global K-Band Lineal*","kband_lineal"],
+            [">Global costo por gap*","global_costogap"],
+            [">Semiglobal Estándar","semi_estandar"],
+            ["--Semiglobal Lineal","semi_lineal"],
+            [">Semiglobal costo por gap*","semi_costogap"],
+            [">Local Estándar","local_estandar"],
+            ["--Local Lineal","local_lineal"],
+            [">Local costo por gap*","local_costogap"],
         ]
     
 class MainHandler(RequestHandler):
@@ -34,8 +34,9 @@ class MainHandler(RequestHandler):
         first_word = self.get_argument("first_word")
         second_word = self.get_argument("second_word")
         type_name = self.get_argument("type")
-        print(type_name)
-        results = Algorithms().get_result(first_word, second_word, type_name)
+        kband_value = self.get_argument("kband_value")
+        print(kband_value)
+        results = Algorithms().get_result(first_word, second_word, type_name, kband_value= kband_value)
         
         self.render("index.html", results=results, algorithmsList = algorithmsList)
 

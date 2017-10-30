@@ -43,7 +43,9 @@
             </label>
             <br>
             {% end %}
-            
+            <label for="kband_value"> Ingrese valor para kband: </label>
+            <input id="kband_value" name="kband_value" value="2" />
+            <br/>
             <input class="btn btn-primary" type="submit" value="Submit"/>
         </form>
         
@@ -52,22 +54,30 @@
         {% if results is not None %}
         <h3>Resultados: {{results["algorithm"]}}</h3>
         <br>
-        
-        <p>Optimal value: {{ results["optimal_value"] }}</p>
-        <p>Optimal path: {{ results["optimal_path"] }}</p>
+        <h4>Hileras alineadas</h4>
+        <p>
+            <span>{{results["alignment1"]}}</span>
+            <br/>
+            <span>{{results["alignment2"]}}</span>
+        </p>
+        <p>Valor Óptimo: {{ results["optimal_value"] }}</p>
+        <p>Camino Óptimo: {{ results["optimal_path"] }}</p>
+        <p>Memoria Utilizada: {{ results["total_memory"] }}</p>
+        <p>Tiempo de ejecución: {{ results["total_time"] }}</p>
 
         <table class="table table-bordered">
             <tr>
                 <td></td>
-                {% for letter in results["first_word"] %}
+                <td></td>
+                {% for letter in results["second_word"] %}
                 <td>{{ letter }}</td>
                 {% end %}
             </tr>
             
             {% for y, row in enumerate(results["matrix"]) %}
             <tr>
-                <td>{{ results["second_word"][0] }}</td>
-                {% set results["second_word"] = results["second_word"][1:] %}
+                <td>{{ results["first_word"][0] }}</td>
+                {% set results["first_word"] = results["first_word"][1:] %}
                 {% for x, element in enumerate(row) %}
                 
                     {% if (x, y) in results["optimal_path"] %}
